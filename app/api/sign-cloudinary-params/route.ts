@@ -5,8 +5,6 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { paramsToSign } = body;
 
-        console.log(paramsToSign);
-
         const secret = process.env.CLOUDINARY_API_SECRET;
         if (!secret) {
             return Response.json({ error: "Cloudinary API secret is not configured" }, { status: 500 });

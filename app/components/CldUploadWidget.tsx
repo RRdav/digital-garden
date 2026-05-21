@@ -8,7 +8,6 @@ export default function CloudinaryUpload() {
       options={{
         uploadPreset: 'digital-garden-upload',
       }}
-      onSuccess={(results) => {console.log(results)}}
     >
       {({ open }) => {
         return (

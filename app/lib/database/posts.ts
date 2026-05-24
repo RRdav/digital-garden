@@ -1,4 +1,4 @@
-import { createClient } from "@/app/utils/supabase/client";
+import { createClient } from "@/app/lib/supabase/client";
 import { Post } from "@/app/types/posts";
 
 // Fetch all posts from the 'posts' table in Supabase

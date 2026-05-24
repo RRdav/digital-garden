@@ -1,4 +1,4 @@
-import cloudinary from '@/app/utils/cloudinary/cloudinary';
+import cloudinary from '@/app/lib/cloudinary/cloudinary';
 
 export async function POST(request: Request) {
     try {

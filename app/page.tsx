@@ -4,6 +4,7 @@ import Image from "next/image";
 import CloudinaryUpload from "./components/CldUploadWidget";
 import { getPosts, addPost } from "./lib/database/posts";
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { usePosts, useAddPost } from "./hooks/usePosts";
 
 const samplePost = {
     content: {
@@ -58,11 +59,7 @@ export default function Home() {
     queryFn: fetchUsers,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
-      console.log(lastPage);
       const nextSkip = lastPage.skip + lastPage.limit;
-      console.log("Last Page:", lastPage);
-      console.log("Next Skip:", nextSkip);
-
       if (nextSkip >= lastPage.total) {
         return undefined; // No more pages to fetch
       }
@@ -71,13 +68,15 @@ export default function Home() {
     },
   })
 
-
+  const { data: postsData, error: postsError, isLoading: postsLoading } = usePosts();
+  const { mutate: createPost, isPending } = useAddPost();
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <h1 className="text-6xl font-bold text-center">Welcome</h1>
-         Welcome to Ewan
+        <h1 className="text-6xl font-bold text-center">Welcome to the GoonetteHub!</h1>
+
+         {(console.log("Posts Data:", postsData), null)}
 
          {/* Test Infinite Query */}
           <h2>Test Infinite Query</h2>
@@ -116,19 +115,21 @@ export default function Home() {
           {/* <CloudinaryUpload /> */}
 
           {/* Sample get and add post buttons */}
-          {/* <button onClick={async () => {
-            const posts = await getPosts();
-            console.log(posts);
-          }}>
-            Get Posts
+          <button
+            onClick = {() => {
+              createPost(samplePost);
+            }}
+          >
+            {isPending ? "Adding Post..." : "Add Sample Post"}
           </button>
 
-          <button onClick={async () => {
-            const newPost = await addPost(samplePost);
-            console.log(newPost);
-          }}>
-            Add Sample Post
-          </button> */}
+          <button
+            onClick = {() => {
+              console.log("Posts Data:", postsData);
+            }}
+          >
+            Get Log of Posts
+          </button>
       </main>
     </div>
   );

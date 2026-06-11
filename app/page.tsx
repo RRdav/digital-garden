@@ -76,8 +76,6 @@ export default function Home() {
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <h1 className="text-6xl font-bold text-center">Welcome to the GoonetteHub!</h1>
 
-         {(console.log("Posts Data:", postsData), null)}
-
          {/* Test Infinite Query */}
           <h2>Test Infinite Query</h2>
 

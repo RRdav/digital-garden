@@ -10,7 +10,7 @@ const POSTS_QUERY_KEY = "posts";
 export function usePosts() {
     return useQuery({
         queryKey: [POSTS_QUERY_KEY],
-        queryFn: getPosts,
+        queryFn: () => getPosts(),
         refetchOnWindowFocus: true
     })
 }

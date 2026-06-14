@@ -3,8 +3,10 @@
 import Image from "next/image";
 import CloudinaryUpload from "./components/CldUploadWidget";
 import { getPosts, addPost } from "./lib/database/posts";
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { Post } from "./types/posts";
+import { useQuery, useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
 import { usePosts, useAddPost } from "./hooks/usePosts";
+import Link from "next/link";
 
 const samplePost = {
     content: {
@@ -17,24 +19,10 @@ const samplePost = {
     has_gallery: false,
 }
 
-const testURL = "https://jsonplaceholder.typicode.com/posts"
-const sampleInfiniteURL = "https://dummyjson.com/users?limit=5&skip="
+const PAGE_SIZE = 5;
 
-// This is for just general testing of fetching data
-// async function fetchPosts() {
-//   const res = await fetch(testURL);
-//   if (!res.ok) {
-//     throw new Error("Network response was not ok");
-//   }
-//   return res.json();
-// }
-
-async function fetchUsers({ pageParam = 0 }) {
-  const res = await fetch(`${sampleInfiniteURL}${pageParam}`);
-  if (!res.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return res.json();
+async function fetchPostsPage({ pageParam }: { pageParam: number }) {
+  return getPosts({ limit: PAGE_SIZE, offset: pageParam });
 }
 
 export default function Home() {
@@ -54,17 +42,13 @@ export default function Home() {
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery({
-    queryKey: ['projects'],
-    queryFn: fetchUsers,
+  } = useInfiniteQuery<Post[], Error, InfiniteData<Post[], number>, readonly unknown[], number>({
+    queryKey: ['posts'],
+    queryFn: fetchPostsPage,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
-      const nextSkip = lastPage.skip + lastPage.limit;
-      if (nextSkip >= lastPage.total) {
-        return undefined; // No more pages to fetch
-      }
-
-      return nextSkip; // Return the next skip value for the next page
+      if (lastPage.length < PAGE_SIZE) return undefined;
+      return pages.length * PAGE_SIZE;
     },
   })
 
@@ -72,19 +56,22 @@ export default function Home() {
   const { mutate: createPost, isPending } = useAddPost();
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <h1 className="text-6xl font-bold text-center">Welcome to the GoonetteHub!</h1>
+        <h1 className="text-6xl font-bold text-center">Welcome!</h1>
 
          {/* Test Infinite Query */}
-          <h2>Test Infinite Query</h2>
 
           {status === 'pending' ? (<p>Loading...</p>) : status === 'error' ? (<p>Error: {error.message}</p> ) : (
             <>
               {data.pages.map((group, i) => (
-                <div key={i}>
-                  {group.users.map((user: any) => (
-                    <p key={user.id}>{user.firstName} {user.lastName}</p>
+                <div key={i} className="flex flex-col">
+                  {group.map((post) => (
+                    <Link key={post.id}
+                      href={`/post/${post.id}`}
+                    >
+                      {post.content?.text ?? post.id}
+                    </Link>
                   ))}
                 </div>
               ))}

@@ -2,9 +2,16 @@ import { createClient } from "@/app/lib/supabase/client";
 import { Post } from "@/app/types/posts";
 
 // Fetch all posts from the 'posts' table in Supabase
-export async function getPosts() {
+export async function getPosts({ limit, offset = 0 }: { limit?: number; offset?: number } = {}) {
     const supabase = createClient();
-    const { data, error } = await supabase.from('posts').select('*');
+    let query = supabase.from('posts').select('*');
+
+    if (limit) {
+        query = query.range(offset, offset + limit - 1);
+    }
+
+    const { data, error } = await query;
+
     if (error) {
         console.error("Error fetching posts:", error);
         return [];

@@ -14,8 +14,8 @@ import { useState } from "react";
 export default function CreatePost(){
 
     // Setters
-    const [hasGallery, setHasGallery] = useState(false)
     const [imageArray, setImage] = useState<{url: string; publicId: string}[]>([])
+    const [uploadKey, setUploadKey] = useState(0);
 
     // TipTap initialise
     const editor = useEditor({ extensions: [StarterKit, TextStyle, Color], immediatelyRender: false })
@@ -25,18 +25,23 @@ export default function CreatePost(){
     const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault()
         const editorJSON = editor?.getJSON()
-        const galleryBool = hasGallery
+        const galleryValue = imageArray.length >= 2 ? true : false
 
         const postToCreate = {
             content: {
                 text: editorJSON,
             },
             image: imageArray,
-            has_gallery: galleryBool,
+            has_gallery: galleryValue,
         }
 
-
-        createPost(postToCreate);
+        createPost(postToCreate, {
+            onSuccess: () => {
+                editor?.commands.clearContent()
+                setImage([])
+                setUploadKey(prev => prev + 1);
+            }
+        });
     }
     return(
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -46,11 +51,7 @@ export default function CreatePost(){
             </div>
             <div className="flex flex-col gap-1">
                 <label htmlFor="image" className="text-sm font-medium">Image</label>
-                <CloudinaryUpload onImageUpload={(data) => {setImage(prev=> [...prev, data])}}/>
-            </div>
-            <div className="flex flex-col gap-1">
-                <label htmlFor="hasGallery" className="text-sm font-medium">Set to Gallery View?</label>
-                <input type="checkbox" checked={hasGallery} onChange={(e) => {setHasGallery(e.target.checked); console.log(e.target.checked)}}/>
+                <CloudinaryUpload key={uploadKey} onImageUpload={(data) => {setImage(prev=> [...prev, data])}}/>
             </div>
 
             <button type="submit">

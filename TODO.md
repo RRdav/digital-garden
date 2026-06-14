@@ -39,6 +39,6 @@ DIGITAL-GARDEN/
 
 Next Steps:
 - [ ] Implement Supabase Update and Delete operations
-- [ ] Integrate Supabase and Cloudinary flows for seamless media management
+- [x] Integrate Supabase and Cloudinary flows for seamless media management
 - [x] Tanstack Query integration for efficient data fetching and caching
 - [x] Currently implementing Supabase login flow.

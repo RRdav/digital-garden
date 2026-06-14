@@ -1,9 +1,7 @@
 'use client'
 
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import { Color } from '@tiptap/extension-color'
-import { TextStyle } from '@tiptap/extension-text-style'
+import { useEditor, EditorContent, TiptapEditorHTMLElement } from '@tiptap/react'
+import { Editor } from '@tiptap/core'
 
 const COLORS = ['#000000', '#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ffffff']
 
@@ -64,12 +62,7 @@ const MenuBar = ({ editor }: { editor: NonNullable<ReturnType<typeof useEditor>>
   )
 }
 
-const Tiptap = () => {
-  const editor = useEditor({
-    extensions: [StarterKit, TextStyle, Color],
-    content: '<p>Hello World! 🌎️</p>',
-    immediatelyRender: false,
-  })
+const Tiptap = ({editor} : {editor: Editor | null}) => {
 
   return (
     <div className="border border-zinc-700 rounded p-2 bg-zinc-900">

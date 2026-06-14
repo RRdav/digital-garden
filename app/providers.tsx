@@ -10,9 +10,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     // Implement a singleton pattern for QueryClient to ensure it's not recreated on every render
     const [queryClient] = useState(() => new QueryClient({
         defaultOptions: {
-            queries: {
-                staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
-            }
+            // queries: {
+            //     staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+            // }
         }
     }));
     return (

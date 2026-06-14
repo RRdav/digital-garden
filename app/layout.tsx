@@ -35,8 +35,8 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <div className="flex flex-col flex-1 items-center justify-center">
-          <h1>{user?.email ?? "Not logged in"}</h1>
+        <div className="flex flex-col flex-1 items-center justify-center bg-black">
+          {/* <h1>{user?.email ?? "Not logged in"}</h1> */}
           <SignOutButton user={user} />
           <Providers>{children}</Providers>
         </div>

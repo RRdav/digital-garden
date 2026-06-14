@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.tiptap h1 { font-size: 2rem; font-weight: 700; margin: 0.5rem 0; }
+.tiptap h2 { font-size: 1.75rem; font-weight: 700; margin: 0.5rem 0; }
+.tiptap h3 { font-size: 1.5rem; font-weight: 600; margin: 0.5rem 0; }
+.tiptap h4 { font-size: 1.25rem; font-weight: 600; margin: 0.5rem 0; }
+.tiptap h5 { font-size: 1.1rem; font-weight: 600; margin: 0.5rem 0; }
+.tiptap h6 { font-size: 1rem; font-weight: 600; margin: 0.5rem 0; }
+.tiptap strong { font-weight: 700; }
+.tiptap em { font-style: italic; }
+.tiptap p { margin: 0.25rem 0; }

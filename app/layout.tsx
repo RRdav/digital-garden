@@ -4,6 +4,7 @@ import Providers from "./providers";
 import "./globals.css";
 import { createClient } from "./lib/supabase/server";
 import SignOutButton from "./components/SignOutButton";
+import Link from "next/link";
 
 
 const geistSans = Geist({
@@ -37,6 +38,11 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col">
         <div className="flex flex-col flex-1 items-center justify-center bg-black">
           {/* <h1>{user?.email ?? "Not logged in"}</h1> */}
+          <div>
+            <Link href="/" className="mr-2">Back to home</Link>
+            <Link href="/add-post">Add post</Link>
+          </div>
+
           <SignOutButton user={user} />
           <Providers>{children}</Providers>
         </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getPosts, addPost } from "@/app/lib/database/posts";
+import { getPosts, addPost, deletePost } from "@/app/lib/database/posts";
 import { Post } from "@/app/types/posts";
 
 const POSTS_QUERY_KEY = "posts";
@@ -20,7 +20,7 @@ export function useAddPost() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (newPost: Omit<Post, 'id' | 'created_at' | 'updated_at'>) => addPost(newPost),
+        mutationFn: (newPost: Omit<Post, 'id' | 'created_at' | 'updated_at' | 'user_id'>) => addPost(newPost),
 
         onSuccess: () => {
             // Invalidate and refetch posts after adding a new one
@@ -29,6 +29,21 @@ export function useAddPost() {
 
         onError: (error) => {
             console.error("Error adding post:", error);
+        }
+    })
+}
+
+export function useDeletePost() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: string) => deletePost(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [POSTS_QUERY_KEY]});
+        },
+
+        onError: (error) => {
+            console.log("Error deleting post:", error)
         }
     })
 }

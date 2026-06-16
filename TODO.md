@@ -41,7 +41,7 @@ DIGITAL-GARDEN/
 - [x] Currently implementing Supabase login flow.
 
 Next Steps:
-- [] Implement Supabase Update and Delete operations
+- [x] Implement Supabase Delete operations
 - [x] Update Post to also have a title field
 - [] Update single post with the data
 - [] Styling!!!!!!!!!!!!!!

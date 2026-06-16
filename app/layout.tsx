@@ -37,7 +37,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <div className="flex flex-col flex-1 items-center justify-center bg-black">
-          {/* <h1>{user?.email ?? "Not logged in"}</h1> */}
+          <h1>{user?.email ?? "Not logged in"}</h1>
           <div>
             <Link href="/" className="mr-2">Back to home</Link>
             <Link href="/add-post">Add post</Link>

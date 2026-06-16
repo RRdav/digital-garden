@@ -20,12 +20,22 @@ export async function getPosts({ limit, offset = 0 }: { limit?: number; offset?:
 }
 
 // Add a new post to the 'posts' table in Supabase
-export async function addPost(post: Omit<Post, 'id' | 'created_at' | 'updated_at'>) {
+export async function addPost(post: Omit<Post, 'id' | 'created_at' | 'updated_at' | 'user_id'>) {
     const supabase = createClient();
-    const { data, error } = await supabase.from('posts').insert([post]).select();
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data, error } = await supabase.from('posts').insert([{ ...post, user_id: user?.id }]).select();
     if (error) {
         console.error("Error adding post:", error);
         return null;
     }
     return data[0] as Post;
+}
+
+// Delete a post
+export async function deletePost(id: string) {
+    const supabase = createClient();
+    const { error } = await supabase.from('posts').delete().eq('id', id)
+    if(error) {
+        console.log(error);
+    }
 }

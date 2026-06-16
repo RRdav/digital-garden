@@ -14,6 +14,7 @@ import { useState } from "react";
 export default function CreatePost(){
 
     // Setters
+    const [title, setTitle] = useState("")
     const [imageArray, setImage] = useState<{url: string; publicId: string}[]>([])
     const [uploadKey, setUploadKey] = useState(0);
 
@@ -28,6 +29,7 @@ export default function CreatePost(){
         const galleryValue = imageArray.length >= 2 ? true : false
 
         const postToCreate = {
+            title,
             content: {
                 text: editorJSON,
             },
@@ -37,6 +39,7 @@ export default function CreatePost(){
 
         createPost(postToCreate, {
             onSuccess: () => {
+                setTitle("")
                 editor?.commands.clearContent()
                 setImage([])
                 setUploadKey(prev => prev + 1);
@@ -45,6 +48,10 @@ export default function CreatePost(){
     }
     return(
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="title" className="text-sm font-medium">Title</label>
+                <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+            </div>
             <div className="flex flex-col gap-1">
                 <label htmlFor="content" className="text-sm font-medium">Content</label>
                 <Tiptap editor={editor}/>

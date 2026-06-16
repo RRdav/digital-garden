@@ -8,16 +8,7 @@ import { useQuery, useInfiniteQuery, InfiniteData } from "@tanstack/react-query"
 import { usePosts, useAddPost } from "./hooks/usePosts";
 import Link from "next/link";
 
-const samplePost = {
-    content: {
-      text: "This is a sample post with an image.",
-    },
-    image: {
-      url: "https://res.cloudinary.com/dxxqmd55w/image/upload/v1700000000/sample.jpg",
-      alt: "Sample Image",
-    },
-    has_gallery: false,
-}
+
 
 const PAGE_SIZE = 5;
 
@@ -53,7 +44,6 @@ export default function Home() {
   })
 
   const { data: postsData, error: postsError, isLoading: postsLoading } = usePosts();
-  const { mutate: createPost, isPending } = useAddPost();
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
@@ -66,13 +56,16 @@ export default function Home() {
             <>
               {data.pages.map((group, i) => (
                 <div key={i} className="flex flex-col">
-                  {group.map((post) => (
-                    <Link key={post.id}
-                      href={`/post/${post.id}`}
-                    >
-                      {post.content?.text ?? post.id}
-                    </Link>
-                  ))}
+                  {group.map((post) => {
+                    console.log(post);
+                    return(
+                      <Link key={post.id}
+                        href={`/post/${post.id}`}
+                      >
+                        {post.id}
+                      </Link>
+                    )}
+                  )}
                 </div>
               ))}
               <div>
@@ -89,24 +82,6 @@ export default function Home() {
             </>
 
           )}
-
-          {/* <h2>Test Pull TanStack</h2>
-          <ul>
-            {data.map((post: any) => {
-              return <li key={post.id}>{post.title}</li>
-            })}
-          </ul> */}
-
-          {/* <CloudinaryUpload /> */}
-
-          {/* Sample get and add post buttons */}
-          <button
-            onClick = {() => {
-              createPost(samplePost);
-            }}
-          >
-            {isPending ? "Adding Post..." : "Add Sample Post"}
-          </button>
 
           <button
             onClick = {() => {

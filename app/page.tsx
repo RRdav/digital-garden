@@ -62,7 +62,7 @@ export default function Home() {
                       <Link key={post.id}
                         href={`/post/${post.id}`}
                       >
-                        {post.id}
+                        {post.title ? post.title : "No title"}
                       </Link>
                     )}
                   )}
